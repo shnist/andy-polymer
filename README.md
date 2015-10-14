@@ -1,2 +1,2 @@
-# andy-polymer-
+# Andy Polymer
 Polymer prototype
