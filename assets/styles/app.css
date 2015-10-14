@@ -5,3 +5,8 @@ html {
 *, *:before, *:after {
 	box-sizing: inherit;
 }
+
+google-map {
+	height: 30rem;
+	width: 30rem;
+}

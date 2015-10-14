@@ -1,9 +1,102 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<!-- 1. Load webcomponents-lite.min.js for polyfill support. -->
 		<script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+		<!-- 2. Use an HTML Import to bring in some elements. -->
+		<link rel="import" href="bower_components/paper-card/paper-card.html">
+		<link rel="import" href="bower_components/paper-button/paper-button.html">
+		<link rel="import" href="bower_components/google-map/google-map.html">
+		<!-- normalize css -->
+		<link rel="stylesheet" href="bower_components/normalize-css/normalize.css">
+		<!-- custom css -->
+		<link rel="stylesheet" href="assets/styles/app.css">
 	</head>
 	<body>
+		<article id="andy-polymer"></article>
+	
 
+		<script src="bower_components/jquery/dist/jquery.js"></script>
+		<script>
+			var container = document.querySelector('#andy-polymer');
+			
+			document.addEventListener('WebComponentsReady', function () {
+				//getWeather();
+				getTubeStatus();
+
+			});
+
+			function getWeather() {				
+				$.ajax('http://api.openweathermap.org/data/2.5/weather?q=London,uk&appid=bd82977b86bf27fb59a04b61b657fb6f', {
+					dataType: 'jsonp'
+				})
+				.done(function (response) {
+					//createMap(response.coord);
+				})
+				.fail(function ( jqXHR, textStatus, errorThrown ) {
+					console.error( jqXHR, textStatus, errorThrown );
+				})
+			}
+
+			function getTubeStatus() {
+				$.ajax('http://localhost:3000/v1/tube-status', {
+					dataType: 'json'
+				})
+				.done(function (response) {
+					createTubeStatusCard(response);
+				})
+				.fail(function ( jqXHR, textStatus, errorThrown ) {
+					console.error( jqXHR, textStatus, errorThrown );
+				})
+			}
+
+			function createTubeStatusCard(response) {
+				var content = document.createElement('section');
+
+				var list = document.createElement('ul');
+				response.forEach(function (tubeLine) {
+					var listItem = document.createElement('li');
+					var listItemInfo = document.createTextNode(tubeLine.name + ' has a ' + tubeLine.status);
+
+					listItem.appendChild(listItemInfo);
+					list.appendChild(listItem);
+				});
+
+				content.appendChild(list);
+
+				var card = createPaperCard('Tube Status', content);
+				container.appendChild(card);
+			}
+
+
+			function createMap(location) {
+				var map = document.createElement('google-map');
+				map.latitude = location.lat;
+				map.longitude = location.lon;
+				map.zoom = 15;
+
+				var marker = document.createElement('google-map-marker');
+				marker.latitude = location.lat;
+				marker.longitude = location.lon;
+				map.appendChild(marker);
+
+				console.log(map);
+
+				container.appendChild(map);
+			}
+
+			function createPaperCard(title, content) {
+				var card = document.createElement('paper-card');
+				card.heading = title;
+
+				var cardContent = document.createElement('div');
+				cardContent.classList.add('card-content');
+				cardContent.appendChild(content);
+				card.appendChild(cardContent);
+
+				return card;
+			}
+		</script>
 	</body>
+
 </html>
