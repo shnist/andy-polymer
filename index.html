@@ -4,38 +4,6 @@
 		<script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
 	</head>
 	<body>
-		<script>
-			window.fbAsyncInit = function() {
-				FB.init({
-					appId      : '801634389905442',
-					xfbml      : true,
-					version    : 'v2.5'
-				});
-			};
 
-			(function(d, s, id){
-				var js, fjs = d.getElementsByTagName(s)[0];
-				if (d.getElementById(id)) {return;}
-				js = d.createElement(s); js.id = id;
-				js.src = "//connect.facebook.net/en_US/sdk.js";
-				fjs.parentNode.insertBefore(js, fjs);
-			}(document, 'script', 'facebook-jssdk'));
-		</script>
-		<script>
-		// Only works after `FB.init` is called
-		function myFacebookLogin() {
-	  		FB.login(function(){
-		  		FB.api(
-				    "/me/friends",
-				    function (response) {
-						if (response && !response.error) {
-							console.log(response);
-						}
-				    }
-				);
-	  		}, {scope: 'user_friends'});
-		}
-		</script>
-		<button onclick="myFacebookLogin()">Login with Facebook</button>
 	</body>
 </html>
