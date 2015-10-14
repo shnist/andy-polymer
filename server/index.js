@@ -2,8 +2,14 @@ var koa = require('koa');
 var route = require('koa-route');
 var logger = require('koa-logger');
 var cors = require('koa-cors');
-
 var request = require('koa-request');
+
+var mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/andy');
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error: '));
+
 
 var app = koa();
 
