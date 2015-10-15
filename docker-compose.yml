@@ -2,8 +2,6 @@ web:
     build: ./server
     ports: 
     - "3000:3000"
-    volumes:
-    - "./server:/code"
     links:
     - db
 db:
