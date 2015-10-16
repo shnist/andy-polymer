@@ -4,13 +4,12 @@ var logger = require('koa-logger');
 var cors = require('koa-cors');
 var request = require('koa-request');
 
-var mongoose = require('mongoose');
-
-mongoose.connect('mongodb://localhost/andy');
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error: '));
+var redis = require('redis');
+var coRedis = require('co-redis');
 
 
+var database = redis.createClient('6379', '192.168.59.103');
+var coDatabase = coRedis(database);
 var app = koa();
 
 
@@ -34,6 +33,14 @@ function *tubeStatus () {
 		url: 'https://api.tfl.gov.uk/line/mode/tube/status'
 	};
 
+	var key = 'tube-status';
+
+	var statusCache = yield coDatabase.get(key);
+
+	if (statusCache !== null) {
+		return this.body = statusCache;
+	}
+
 	var response = yield request(options);
 	var tubeStatuses = JSON.parse(response.body);
 	var info = [];
@@ -45,6 +52,8 @@ function *tubeStatus () {
 
 		info.push(line);
 	});
+
+	yield coDatabase.set(key, JSON.stringify(info));
 
 	this.body = info;
 }
