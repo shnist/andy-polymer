@@ -1,0 +1,23 @@
+{
+  "name": "andy-polymer-server",
+  "version": "1.0.0",
+  "description": "Andy Polymer server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "koa": "^1.1.0",
+    "koa-cors": "0.0.16",
+    "koa-logger": "^1.3.0",
+    "koa-request": "^1.0.0",
+    "koa-route": "^2.4.2",
+    "mongodb": "^2.0.45",
+    "mongoose": "^4.1.11"
+  },
+  "devDependencies": {
+    "nodemon": "^1.7.1"
+  }
+}
