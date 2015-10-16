@@ -33,12 +33,17 @@ function *tubeStatus () {
 		url: 'https://api.tfl.gov.uk/line/mode/tube/status'
 	};
 
-	var statusCache = yield coDatabase.get('tube-status');
+	var key = 'tube-status';
+
+	var statusCache = yield coDatabase.get(key);
+
+	if (statusCache !== null) {
+		return this.body = statusCache;
+	}
+
 	var response = yield request(options);
 	var tubeStatuses = JSON.parse(response.body);
 	var info = [];
-
-	console.log(statusCache);
 
 	tubeStatuses.forEach(function (tubeLine){
 		var line = {};
@@ -47,6 +52,8 @@ function *tubeStatus () {
 
 		info.push(line);
 	});
+
+	yield coDatabase.set(key, JSON.stringify(info));
 
 	this.body = info;
 }
