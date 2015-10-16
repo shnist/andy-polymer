@@ -1,0 +1,1 @@
+server/node_modules/.bin/nodemon server/index.js
